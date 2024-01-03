@@ -51,7 +51,7 @@ A cron job is a command or shell script executed periodically according to a fix
 ![monitoring services components](/assets/images/2.10.svg){:class="resizable small centered"}
 
 
-The schedule is articulated in a cron-specific syntax, detailed further in the Limitations [LINK TO LIMIATIONS???] section. The script denotes the specific executable to be run by cron at the scheduled intervals.
+The schedule is articulated in a cron-specific syntax, detailed further in section 1.3 Limitations of Cron. The script denotes the specific executable to be run by cron at the scheduled intervals.
 
 #### 1.2.3 Crontab
 
@@ -87,7 +87,7 @@ Crond configures the environment to match the user's specifications, and the chi
 
 ### 1.3 Limitations of Cron
 
-Despite being widely used, cron has limitations. A brief search for 'cron job issues' returns many results, indicating that users often face challenges when working with cron. Common cron user concerns include [CITATIONS]:
+Despite being widely used, cron has limitations. A brief search for 'cron job issues' returns many results, indicating that users often face challenges when working with cron. Common cron user concerns include [[1]](#6-references) [[2]](#6-references):
 
 * Did my cron job start?
 * Was my job completed?
@@ -95,7 +95,6 @@ Despite being widely used, cron has limitations. A brief search for 'cron job is
 * Where can I find logs for cron jobs?
 
 The remainder of this section explains the specific issues associated with cron that we designed Sundial to address.
-
 
 #### 1.3.1 Cron jobs fail silently
 
@@ -481,7 +480,7 @@ The Monitoring Service uses **Task Queues** to deal with missed pings.
 
 ![monitoring services components](/assets/images/2.19.svg){:class="resizable small centered"}
 
-Task Queues are implemented with **pg-boss** [[3]](https://github.com/timgit/pg-boss) [ENSURE CITATION NUMBER CORRECT], an npm package built on PostgreSQL. Specifically, we leverage the **deferred tasks** feature, where tasks are added with a specified delay and are processed by a worker only after that delay has passed.
+Task Queues are implemented with **pg-boss** [[3]](#6-references), an npm package built on PostgreSQL. Specifically, we leverage the **deferred tasks** feature, where tasks are added with a specified delay and are processed by a worker only after that delay has passed.
 
 A **worker** is a function assigned to a queue. The Monitoring Service executes this function when 'processing' a task, passing in any additional data included in the task.
 
@@ -860,9 +859,9 @@ For a more comprehensive solution, future work could involve allowing users to c
 
 #### 3.1.7 Challenge: runs rotation
 
-With monitoring, there is an ever-increasing amount of data related to runs. Thus, we decided to limit the number of runs (on a per-monitor basis). We implemented a rows rotation mechanism (similar to log [ENSURE CORRECT CITATION NUMBER] rotations [[4]](https://en.wikipedia.org/wiki/Log_rotation)) to our runs table to ensure that the table did not keep growing infinitely. We implemented a stored procedure that runs once weekly and reduces the amount of runs by deleting all runs except the 100 most current for each monitor.
+With monitoring, there is an ever-increasing amount of data related to runs. Thus, we decided to limit the number of runs (on a per-monitor basis). We implemented a rows rotation mechanism (similar to log rotations [[4]](#6-references)) to our runs table to ensure that the table did not keep growing infinitely. We implemented a stored procedure that runs once weekly and reduces the amount of runs by deleting all runs except the 100 most current for each monitor.
 
-A stored procedure [ENSURE CORRECT CITATION NUMBER] [[5]](https://www.postgresql.org/docs/current/xproc.html) is a feature available in many RDBMS and is a grouping of SQL statements. Stored procedures have names used to call them and execute the group of statements, similar in function to a batch script. An additional job queue (called the **maintenance queue**) was created with pg-boss, and the stored procedure is scheduled using a deferred job to be processed at the time mentioned.
+A stored procedure [[5]](#6-references) is a feature available in many RDBMS and is a grouping of SQL statements. Stored procedures have names used to call them and execute the group of statements, similar in function to a batch script. An additional job queue (called the **maintenance queue**) was created with pg-boss, and the stored procedure is scheduled using a deferred job to be processed at the time mentioned.
 
 
 ### 3.2 Management
@@ -960,7 +959,7 @@ This section will outline our approach to addressing security concerns when usin
 
 In the multi-node architecture, both the Listening Service of the Linking Client and the application server of the Monitoring Service must expose a port to the network to facilitate communication. 
 
-[4.10]pic of dangerously open ports]
+[4.10]pic of dangerously open ports
 
 Of course, it’s best practice to secure any API accessible through the network, but it’s especially critical to secure the API provided by the Monitoring Service’s application server.
 
@@ -1034,7 +1033,7 @@ Our two primary objectives are to:
 
 A 0% failure rate indicates that every request forwarded to the Monitoring Service should be processed without encountering any failures. We verify that all requests yield a 200 status code to ensure this.
 
-Jobs overlap when they aren't completed before their subsequent scheduled execution, leading to multiple instances of the job running simultaneously. This is an often-cited cause of cron-related failures [[CITATION](https://oracle-base.com/blog/2023/07/14/when-overlapping-jobs-attack/#:~:text=If%20you%20schedule%20something%20to,Eventually%20things%20can%20go%20bang)]. We convert this objective into a quantifiable target by restricting response time.
+Jobs overlap when they aren't completed before their subsequent scheduled execution, leading to multiple instances of the job running simultaneously. This is an often-cited cause of cron-related failures [[6]](#6-references). We convert this objective into a quantifiable target by restricting response time.
 
 For jobs set to run every minute, we determine this restriction using the formula:
 
@@ -1094,7 +1093,7 @@ Following our objectives, here's what we found:
 Using the 30 job limit imposed in the context of the 55-second job as a benchmark, we can compare prices with another monitoring provider. Cronitor, for instance, offers cron job monitoring at a base rate of <span>$</span>2 per monitor per month. Considering our tests were conducted with Sundial deployed on the minimum <span>$</span>6 per month Digital Ocean droplet, we derive a cost of 20 cents per monitor per month. This signifies a 90% decrease in expenses.
 
 
-## 4.5 Future Work
+## 5 Future Work
 
 As with any project, there are always ways to improve or extend it. Here are a couple of ideas that we thought would be particularly impactful:
 
@@ -1105,3 +1104,17 @@ As with any project, there are always ways to improve or extend it. Here are a c
 * Allow use of all crontabs on a server, not just the crontab of an individual user
 * Provide the option to daemonize the Listening Service for additional non-Linux OS’s
 * Better support a full public deployment option: HTTPS Server + Additional security steps 
+
+## 6 References
+
+[1] [https://serverfault.com/questions/449651/why-is-my-crontab-not-working-and-how-can-i-troubleshoot-it](https://serverfault.com/questions/449651/why-is-my-crontab-not-working-and-how-can-i-troubleshoot-it)
+
+[2] [https://stackoverflow.com/questions/22743548/cronjob-not-running](https://stackoverflow.com/questions/22743548/cronjob-not-running)
+
+[3] [https://github.com/timgit/pg-boss](https://github.com/timgit/pg-boss)
+
+[4] [https://en.wikipedia.org/wiki/Log_rotation](https://en.wikipedia.org/wiki/Log_rotation)
+
+[5] [https://www.postgresql.org/docs/current/xproc.html](https://www.postgresql.org/docs/current/xproc.html)
+
+[6] [https://cronitor.io/guides/cron-troubleshooting-guide](https://cronitor.io/guides/cron-troubleshooting-guide)
