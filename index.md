@@ -13,16 +13,15 @@ article_header:
       type: outline-theme-dark
   theme: orange
   background_image:
-    gradient: "linear-gradient(163deg, rgba(86,86,86,0.9584427521008403) 23%, rgba(254,215,79,1) 58%, rgba(255,160,72,1) 98%);"
+    gradient: "linear-gradient(163deg, rgba(86,86,86,0.9584427521008403) 2%, rgba(254,215,79,1) 60%, rgba(255,160,72,1) 98%);"
 
 data:
   sections:
     - title: Intuitive monitoring for all your cron jobs
       excerpt: Know the status of any job, at a glance.
+      theme: orange
       image:
         src: /assets/images/2.6.svg
-      
-      theme: orange
     - title: Effortless management
       theme: orange
       excerpt: Quickly and easily add, edit, or delete cron jobs, even on remote nodes.
