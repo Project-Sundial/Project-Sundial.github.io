@@ -1,8 +1,7 @@
 ---
 layout: landing
 title: Sundial
-excerpt: >
-  Sundial is a self-hosted, open-source cron job monitoring and management system that can be operated across one or multiple nodes.
+excerpt: Sundial is a self-hosted, open-source cron job monitoring and management system that can be operated across one or multiple nodes.
 
 article_header:
   actions:
@@ -12,9 +11,10 @@ article_header:
     - text: Tech Talk
       url: https://www.youtube.com/watch?v=O-mJKlJGk6w
       type: outline-theme-dark
-  theme: dark
+  theme: orange
   background_image:
-    gradient: "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(254,232,56,1) 100%)"
+    gradient: "linear-gradient(163deg, rgba(86,86,86,0.9584427521008403) 23%, rgba(254,215,79,1) 58%, rgba(255,160,72,1) 98%);"
+
 data:
   sections:
     - title: Intuitive monitoring for all your cron jobs
