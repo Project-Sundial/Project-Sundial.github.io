@@ -24,7 +24,7 @@ Cron is a time-based job scheduler found in Unix and Unix-like operating systems
 
 Some common use cases of the cron utility are:
 
-![common cron use cases](/assets/images/1.1.svg){:class="resizable x-large centered"} 
+![common cron use cases](/assets/images/1.1.svg){:class="resizable xx-large centered"} 
 
 
 1. **Database Backups** \
@@ -48,7 +48,7 @@ Organizations with predictable traffic hours can use cron to scale their applica
 
 A cron job is a command or shell script executed periodically according to a fixed schedule, such as a specific time, date, or interval. Cron jobs comprise a schedule and a script; below is an example.
 
-![monitoring services components](/assets/images/1.2.svg){:class="resizable small centered"}
+![example cronjob: 0 02 * * * /path/to/roatate-log](/assets/images/1.2.svg){:class="resizable medium centered"}
 
 
 The schedule is articulated in a cron-specific syntax, detailed further in section 1.3 Limitations of Cron. The script denotes the specific executable to be run by cron at the scheduled intervals.
@@ -61,7 +61,7 @@ The term ‘crontab’ refers to _both_ a **configuration file** used for managi
 
 See how the command crontab -e displays the contents of the crontab configuration file in a text editor.
 
-<video autoplay loop muted playsinline class="resizable medium" aria-label="crontab -e screencapture">
+<video autoplay loop muted playsinline class="resizable large" aria-label="crontab -e screencapture">
     <source src="/assets/videos/0.3.mp4" type="video/mp4" />
     Your browser does not support the HTML5 Video element.
 </video>
@@ -76,8 +76,8 @@ Each user on a machine has an individual crontab, and there is also a system-wid
 Crond functions as a background process, also called a daemon. It regularly scans crontab files for scheduled jobs. When crond identifies a job scheduled to run, it initiates a child process dedicated to executing the job, as shown below. 
 
 
-<video autoplay loop muted playsinline class="resizable xx-s" aria-label="crond launching rotate-log script as child process">
-    <source src="/assets/videos/2.11.mp4" type="video/mp4" />
+<video autoplay loop muted playsinline class="resizable x-large" aria-label="crond launching job scripts as child process on a schedule">
+    <source src="/assets/videos/0.4.mp4" type="video/mp4" />
     Your browser does not support the HTML5 Video element.
 </video>
 
@@ -110,6 +110,11 @@ A failure to complete often suggests an issue inherent to the job itself. It cou
 
 A particularly problematic scenario of job failure arises when the scheduled interval for a job is shorter than the duration of the job itself. This results in concurrent execution, known as **overlapping jobs,** and can potentially deplete system resources.
 
+<video autoplay loop muted playsinline class="resizable x-large" aria-label="crond launching multiple versions of same job script concurrently">
+    <source src="/assets/videos/0.5.mp4" type="video/mp4" />
+    Your browser does not support the HTML5 Video element.
+</video>
+
 The impact of a job failing to run can vary from being merely inconvenient to severely detrimental. While the inconvenience of a marketing email not being sent might be manageable, the absence of essential database backups and the lack of crucial security updates can leave the system vulnerable.
 
 #### 1.3.2 Cron logs are not centralized
@@ -129,13 +134,13 @@ The cron scheduling syntax can be unintuitive, especially for new users.
 
 <div class="flex-container">
   <figure>
-    <img src="/assets/images/1.3.svg" alt="once a month cron schedule: 0 0 1 * *" class="resizable large">
+    <img src="/assets/images/1.3.svg" alt="once a month cron schedule: 0 0 1 * *" class="resizable xxx-large">
     <figcaption>Figure 1</figcaption>
   </figure>
 
 
   <figure>
-    <img src="/assets/images/1.4.svg" alt="once a year cron schedule: 0 0 1 1 *" class="resizable large">
+    <img src="/assets/images/1.4.svg" alt="once a year cron schedule: 0 0 1 1 *" class="resizable xxx-large">
     <figcaption>Figure 2</figcaption>
   </figure>
 </div>
@@ -144,7 +149,7 @@ To illustrate how easy it is to make a mistake, Figure 1 is an example of a sche
 
 The image below explains each field's meaning.
 
-![cron schedule syntax explanation](/assets/images/1.6.svg){:class="resizable medium centered"}
+![cron schedule syntax explanation](/assets/images/1.6.svg){:class="resizable large centered"}
 
 It’s easy to accidentally write the wrong schedule, leading to jobs running at unexpected times. Additionally, a user must manually edit the crontab. When numerous other cron jobs exist, it’s easy to edit the wrong one mistakenly.
 
@@ -218,7 +223,7 @@ In summary, Sundial is an open-source, self-hosted solution that focuses specifi
 * centralized error logging
 * convenient job management from a UI
 
-![monitoring services components](/assets/images/1.8.svg){:class="resizable xx-large centered"}
+![alternatives comparison table](/assets/images/1.8.svg){:class="resizable xxxx-large centered"}
 
 ## 2 The Sundial System
 
@@ -237,7 +242,7 @@ The Sundial system consists of two main components:
 1. The Monitoring Service
 2. The Linking Client
 
-![monitoring service and linking client](/assets/images/2.1.svg){:class="resizable xx-s centered"}
+![monitoring service and linking client](/assets/images/2.1.svg){:class="resizable medium centered"}
 
 
 The following sections will give a general outline of the Monitoring Service and the Linking Client. We’ll explain the details of individual components and provide a high level overview of their roles.
@@ -251,12 +256,12 @@ The Service consists of four components:
 
 
 
-* a UI
+* a UI, accessible via the browser
 * an application server that exposes an API
 * Task Queues
 * a PostgreSQL database
 
-![monitoring services components](/assets/images/2.2.svg){:class="resizable medium centered"}
+![monitoring services components](/assets/images/2.2.svg){:class="resizable xxx-large centered"}
 
 We’ve containerized the Monitoring Service for straightforward deployment. The UI, database, and application server (including the Task Queues) are each encapsulated into a Docker image. A Docker Compose script runs them collectively as a single package.
 
@@ -265,11 +270,7 @@ We’ve containerized the Monitoring Service for straightforward deployment. The
 
 The **Linking Client** serves as a link between the Monitoring Service and the crontab.
 
-<video autoplay loop muted playsinline class="resizable medium" aria-label="linking client links monitoring service and cron">
-    <source src="/assets/videos/2.3.mp4" type="video/mp4" />
-    Your browser does not support the HTML5 Video element.
-</video>
-
+![linking client links monitoring service and cron](/assets/images/2.3.svg){:class="resizable xx-large centered"}
 
 It consists of: 
 
@@ -277,7 +278,7 @@ It consists of:
 * a binary executable containing a collection of scripts
 
 
-![linking client components](/assets/images/2.3.5.svg){:class="resizable x-s centered"}
+![linking client components](/assets/images/2.3.5.svg){:class="resizable large centered"}
 
 The Linking Client is packaged as a standalone binary executable. Users can install the Linking Client on any Linux server without additional dependencies. 
 
@@ -292,10 +293,8 @@ Sundial accommodates both single and multi-node setups.
 
 In a **single-node configuration**, the Monitoring Service and the Linking Client coexist on the same node.
 
-<video autoplay loop muted playsinline class="resizable x-large" aria-label="single node architecture">
-    <source src="/assets/videos/2.4.mp4" type="video/mp4" />
-    Your browser does not support the HTML5 Video element.
-</video>
+![single node architecture](/assets/images/2.4.svg){:class="resizable xxx-large centered"}
+
 
 For **multi-node scenarios**, additional nodes - termed **remote nodes** - are integrated through the installation of the Linking Client. The Monitoring Service, on the other hand, only runs on one designated node, referred to as the **hub node**.
 
@@ -303,10 +302,8 @@ When adding new remote nodes, the `sundial register` command is passed the IP ad
 
 If desired, the hub node can exclusively host the Monitoring Service, monitoring the cron jobs of remote nodes across a distributed network.
 
-<video autoplay loop muted playsinline class="resizable xx-large" aria-label="multi node architecture">
-    <source src="/assets/videos/2.5.mp4" type="video/mp4" />
-    Your browser does not support the HTML5 Video element.
-</video>
+![multi node architecture](/assets/images/2.5.svg){:class="resizable xxxx-large centered"}
+
 
 ### 2.2 Job Monitoring
 
@@ -326,7 +323,7 @@ This section focuses on how the Monitoring Service documents job execution. To d
 
 The Linking Client provides both requirements to the Monitoring Service. Next, we explain the two scripts that enable the Linking Client to do so.  
 
-![monitoring services components](/assets/images/2.7.svg){:class="resizable small centered"}
+![linking clients run and discover scripts](/assets/images/2.7.svg){:class="resizable large centered"}
 
 ##### 2.2.1.1 Prior Knowledge - `discover`
 
@@ -334,14 +331,14 @@ The Linking Client uses its `discover` script to provide the Monitoring Service 
 
 The `discover` script sends information about each job in the crontab file, such as the schedule and command, to the Monitoring Service. The Monitoring Service stores this information in its database.
 
-<video autoplay loop muted playsinline class="resizable xx-large" aria-label="monitor created in db for each cronjob in crontab">
+<video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="monitor created in db for each cronjob in crontab">
     <source src="/assets/videos/2.8.mp4" type="video/mp4" />
     Your browser does not support the HTML5 Video element.
 </video>
 
 Additionally, the `discover` script sets up the real-time notifications of job execution that the Monitoring Service requires through a process called “**wrapping**”.
 
-![pre-wrapped crontab](/assets/images/2.9.5.svg){:class="resizable medium centered"}
+![pre-wrapped crontab](/assets/images/2.9.5.svg){:class="resizable x-large centered"}
 
 As shown above, cron jobs are considered “**wrapped**” when the text `sundial run`, followed by a string of letters and numbers, has been inserted in between the schedule and the command.
 
@@ -371,12 +368,12 @@ The remainder of this section is a detailed explanation of how the `run` script 
 
 First, a refresher on how the cron utility executes cron jobs: the cron daemon executes anything following the schedule string. In the example cron job below, crond executes the `rotate-log` script directyl .
 
-![pre-wrapped cron job](/assets/images/1.2.svg){:class="resizable small centered"}
+![pre-wrapped cron job: 0 02 * * * /path/to/rotate-log](/assets/images/1.2.svg){:class="resizable large centered"}
 
 
 When a job is “wrapped”, the schedule string is followed by `sundial run`, an endpoint key, and the original job script.
 
-![wrapped cron job](/assets/images/2.12.svg){:class="resizable x-large centered"}
+![wrapped cron job: 0 02 * * * sundial run /path/to/rotate-log](/assets/images/2.12.svg){:class="resizable xxx-large centered"}
 
 <div class="flex-container">
 
