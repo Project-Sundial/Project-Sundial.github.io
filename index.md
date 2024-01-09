@@ -45,6 +45,7 @@ data:
         - title: Sofia Alere
           image:
             src: /assets/images/sof-profile.png
+            url: https://www.sofalere.com/
           excerpt: Chicago, US
           actions:
             - text: '<i class="fas fa-solid fa-globe"></i>'
@@ -61,6 +62,7 @@ data:
         - title: Jacob Clark
           image:
             src: /assets/images/jacob-profile.png
+            url: https://www.jacobclark.co.uk/
           excerpt: London, UK
           actions:
             - text: '<i class="fas fa-solid fa-globe"></i>'
@@ -77,6 +79,7 @@ data:
         - title: Mary McDonald
           image:
             src: /assets/images/mary-profile.png
+            url: https://marymcd.ca
           excerpt: Montreal, Canada
           actions:
             - text: '<i class="fas fa-solid fa-globe"></i>'
@@ -93,6 +96,7 @@ data:
         - title: David Perez
           image:
             src: /assets/images/david-profile.jpg
+            url: https://davidscoding.github.io/
           excerpt: New York, US
           actions:
             - text: '<i class="fas fa-solid fa-globe"></i>'
