@@ -28,7 +28,7 @@ article_header:
         <div class="hero__content">
           <div class="mb-5">
 
-            <h3>{{ _section.title }}</h3>
+            <h3 id="{{ _section.id }}">{{ _section.title }}</h3>
               {%- if _section.excerpt-%}
             <p>{{ _section.excerpt }}</p>
             {%- endif -%}
@@ -39,7 +39,7 @@ article_header:
                 {%- include snippets/get-nav-url.html path=_action.url -%}
                 {%- assign _url = __return -%}
                 {%- assign _type = _action.type | default: 'outline-info' -%}
-                <li><a class="button button--{{ _type }} button--pill button--lg" href="{{ _url }}">{{ _action.text }}</a></li>
+                <li><a class="button button--{{ _type }} button--pill button--lg" href="{{ _url }}" target="{{ _action.target }}">{{ _action.text }}</a></li>
               {%- endfor -%}
               </ul>
             {%- endif -%}
@@ -70,23 +70,7 @@ article_header:
                     <div class="mb-5">
                       <h4>{{ child.title }}</h4>
 
-                      {%- if child.excerpt-%}
-                        <p>{{ child.excerpt }}</p>
-                      {%- endif -%}
-
-                      {%- if child.actions -%}
-                        <ul class="menu">
-                          {%- for _action in child.actions -%}
-                            {%- include snippets/get-nav-url.html path=_action.url -%}
-                            {%- assign _url = __return -%}
-                            {%- assign _type = _action.type | default: 'outline-info' -%}
-                            <li><a class="button button--{{ _type }} button--pill button--lg" href="{{ _url }}">{{ _action.text }}</a></li>
-                          {%- endfor -%}
-                        </ul>
-                      {%- endif -%}
-                    </div>
-
-                    {%- if child.image and child.image.src -%}
+                      {%- if child.image and child.image.src -%}
 
                       {%- if child.image.url -%}
                         {%- include snippets/get-nav-url.html path=child.image.url -%}
@@ -105,7 +89,7 @@ article_header:
                       {%- if _item_image_url -%}
                             <a href="{{ _item_image_url }}">
                       {%- endif -%}
-                              <img src="{{ _item_image_src }}"/>
+                              <img class="profile" src="{{ _item_image_src }}"/>
                       {%- if _item_image_url -%}
                             </a>
                       {%- endif -%}
@@ -114,6 +98,22 @@ article_header:
                         </div>
                       {%- endif -%}
                     {%- endif -%}
+
+                      {%- if child.excerpt-%}
+                        <p>{{ child.excerpt }}</p>
+                      {%- endif -%}
+
+                      {%- if child.actions -%}
+                        <ul class="menu">
+                          {%- for _action in child.actions -%}
+                            {%- include snippets/get-nav-url.html path=_action.url -%}
+                            {%- assign _url = __return -%}
+                            {%- assign _type = _action.type | default: 'outline-info' -%}
+                            <li><a class="button button--{{ _type }} button--pill button--lg" href="{{ _action.url }}" target="{{ _action.target }}">{{ _action.text }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
 
                     {%- if child.content-%}
                       <p>{{ child.content }}</p>

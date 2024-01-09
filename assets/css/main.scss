@@ -181,3 +181,12 @@ video.left {
 .visible {
     display: block;
 }
+
+.profile {
+  display: inline-block;
+  max-height: 15rem;
+  max-width: 15rem;
+  border-radius: 50%;
+
+  object-fit: cover;
+}
