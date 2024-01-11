@@ -731,7 +731,7 @@ When the Monitoring Service receives both start and end pings, the Service initi
 
 To explain how we accounted for unordered pings, we’ll first look at a simplified approach to this logic when the Monitoring Service receives the start and end pings in order. Then, we’ll examine how this logic holds up when the order of pings is reversed.
 
-[4.3]*** diagram: start ping arrives to App Server, run created in database, end ping arrives, run updated ***
+<!--[4.3]*** diagram: start ping arrives to App Server, run created in database, end ping arrives, run updated ***-->
 
 When the Monitoring Service receives a start ping, 
 
@@ -750,7 +750,7 @@ Using the same approach, if the Monitoring Service receives an end ping first:
 
 The diagram below displays these steps.
 
-[4.4]*** diagram of steps ***
+<!--[4.4]*** diagram of steps ***-->
 
 To address this issue, we engineered the Monitoring Service to always check for the presence of existing runs, regardless of whether a start or end ping is received. The Monitoring Service uses the existence and state of such runs to act appropriately if the pings arrive out of order.
 
@@ -763,7 +763,7 @@ However, we discovered that this approach led to race conditions, occasionally c
 
 To understand this, let's first look over how our initial implementation handled the arrival of a start ping.
 
-[4.5]*** diagram of ping arriving to App Server; SELECT to DB; App Server checks for existence?; No pre-existing ping ⇒ INSERT to DB; App Server appends new task to Task Queues ****
+<!--[4.5]*** diagram of ping arriving to App Server; SELECT to DB; App Server checks for existence?; No pre-existing ping ⇒ INSERT to DB; App Server appends new task to Task Queues ****-->
 
 
 
@@ -774,7 +774,7 @@ To understand this, let's first look over how our initial implementation handled
 
 Let's look at how this translates when the start and end ping arrive almost simultaneously.
 
-[4.6]*** diagram; similar to above but with both start and end pings; ask Jacob ***
+<!--[4.6]*** diagram; similar to above but with both start and end pings; ask Jacob ***-->
 
 
 
@@ -884,7 +884,7 @@ We chose option 2 for its reduced complexity and network load; the Monitoring Se
 
 #### 3.2.2 Trade-offs: Listening Service vs Polling
 
-[4.7]*** Polling gif ***
+<!--[4.7]*** Polling gif ***-->
 
 
 
@@ -901,7 +901,7 @@ The downside of this decision was that we needed to add additional infrastructur
 
 This section examines our options for managing data flow to the crontab.
 
-[4.8]
+<!--[4.8]-->
 
 
 
@@ -910,7 +910,7 @@ The simplest option was to have the Monitoring Service directly transmit updated
 This approach worked fine in the locally hosted version of our application. Still, it introduced a notable vulnerability over multiple nodes: if not appropriately secured, each Listening Service would become a potential entry point for malicious actors to inject unauthorized cron jobs.
 
 
-[4.9]
+<!--[4.9]-->
 
 As seen in the Management section, this vulnerability led us to an alternative set of steps: 
 
@@ -952,17 +952,15 @@ This section will outline our approach to addressing security concerns when usin
 
 In the multi-node architecture, both the Listening Service of the Linking Client and the application server of the Monitoring Service must expose a port to the network to facilitate communication. 
 
-[4.10]pic of dangerously open ports
-
 Of course, it’s best practice to secure any API accessible through the network, but it’s especially critical to secure the API provided by the Monitoring Service’s application server.
 
 Access to the Monitoring Service’s API would allow a malicious actor to modify the crontabs of both the hub server and any connected remote servers. Additionally, unauthorized changes to monitoring data might disrupt job monitoring, or a flood of requests could overwhelm the system.
 
-[4.11 vid of bad things]
+<!--[4.11 vid of bad things]-->
 
 Our primary recommendation is to employ Sundial's multi-node setup within a Virtual Private Cloud (VPC). VPCs are private, isolated network environments within the cloud that ensure secure communication between nodes using private IP addresses. VPCs are region-specific, meaning a user's nodes cannot span regions. 
 
-[4.12 pic of VPC]
+<!--[4.12 pic of VPC]-->
 
 To enhance adaptability, we've implemented initial security measures for scenarios where VPCs are not feasible. It's crucial to emphasize that these efforts represent initial steps, the system should be hardened further to operate over the wider internet. 
 
@@ -972,11 +970,11 @@ JWTs and API keys must be used in tandem with the HTTPS protocol to provide encr
 
 Upon user login, the Monitoring Service generates a new JSON Web Token (JWT) and stores it in the user's browser. The JWT expires after a set time, after which the user needs to log in again to obtain a new one. This mechanism enhances security by regularly refreshing and validating user authentication.
 
-[4.13 vid of JWT]
+<!--[4.13 vid of JWT]-->
 
 API keys are distributed individually to remote nodes. Users must obtain a new key from the password-protected UI and register it to the node. The registration process involves running the `sundial register` command from the CLI of the target node and passing the key as an argument. The Monitoring Service’s database stores a hashed copy of the API key for authentication when processing requests.
 
-[4.14 vid of API keys]
+<!--[4.14 vid of API keys] -->
 
 
 ## 4 Load Testing
@@ -1005,7 +1003,11 @@ In our case, we structured the testing script to replicate the procedural sequen
 
 It begins with a start ping, observes a specified interval, and concludes with an end ping. The script undergoes _n_ iterations using _n_ virtual users that operate concurrently, closely simulating the behavior of _n_ monitored jobs executing on the same schedule.
 
-[4.15] *** Diagram of virtual users sending pings to the Monitoring Service simultaneously ***
+<video autoplay loop muted playsinline class="resizable medium-large" aria-label="Diagram of virtual users sending pings to the Monitoring Service simultaneously">
+  <source src="/assets/videos/4.15.mp4" type="video/mp4" />
+  Your browser does not support the HTML5 Video element.
+</video>
+
 
 There are two variables in our tests:
 
@@ -1051,7 +1053,7 @@ We'll explore the outcomes derived from our load testing, focusing on simulation
 
 The 200-millisecond job duration was the shortest among our tests. Its quick start and end pings increased the number of requests per second for the Monitoring Service, causing the longest response times among all the modeled scenarios.
 
-[4.16]
+![chart of 55-second job duration](/assets/images/4.16.svg){:class="resizable xxx-large centered screenshot"} 
 
 
 
@@ -1069,8 +1071,7 @@ In line with our objectives, here's what we discovered:
 
 The 55-second job duration was the lengthiest we examined. Its extended interval between start and end pings lessened the load on the Monitoring Service, leading to the shortest response times.
 
-[4.17]
-
+![chart of 55-second job duration](/assets/images/4.17.svg){:class="resizable xxx-large centered screenshot"} 
 
 
 Following our objectives, here's what we found:
