@@ -107,7 +107,7 @@ figcaption {
 }
 */
 #sidebar ul a {
-  color: #b5bbbf;
+  color: #868b8e;
   text-decoration: none;
 }
 
@@ -786,7 +786,7 @@ ul.team-member-icons li {
 body {
   background-color: #fff;
   font-family: Inter, sans-serif;
-  color: #b5bbbf;
+  color: #868b8e;
   /*  font-size: 14px;*/
   line-height: 20px;
 }
@@ -1008,7 +1008,7 @@ a:hover {
 }
 
 .white-paragraph {
-  color: #b5bbbf;
+  color: #868b8e;
   font-weight: 400;
   text-align: justify;
 }
@@ -1430,7 +1430,7 @@ a:hover {
   padding: 20px 12px;
   -webkit-transition: color 0.3s ease;
   transition: color 0.3s ease;
-  color: #b5bbbf;
+  color: #868b8e;
   font-size: 15px;
   font-weight: 500;
   text-decoration: none;
