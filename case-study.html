@@ -379,7 +379,7 @@
             </video>
             
             <p>Additionally, the <code>discover</code> script sets up the real-time notifications of job execution that the Monitoring Service requires through a process called “<strong>wrapping</strong>”.</p>
-            <img src="assets/images/case-study/2.9.5.svg" alt="pre-wrapped crontab" class="case-study-image resizable x-large centered"/>
+            <img src="assets/images/case-study/2.9.5.svg" alt="pre-wrapped crontab" class="case-study-image resizable large centered"/>
             <p>As shown above, cron jobs are considered “<strong>wrapped</strong>” when the text <code>sundial run</code>, followed by a string of letters and numbers, has been inserted in between the schedule and the command.</p>
             <br>
             <p>The string of alphanumeric characters, known as the <strong>endpoint key</strong>, is used by the Monitoring Service to link execution notifications from a job with the job’s corresponding database entity.</p>
@@ -415,25 +415,15 @@
             <img src="assets/images/case-study/2.12.svg" alt="wrapped cron job: 0 02 * * * sundial run /path/to/rotate-log" class="case-study-image resizable xxx-large centered"/>
 
             <p>With this setup, the cron daemon executes <code class="language-plaintext highlighter-rouge">sundial run</code> with two arguments. Recall that <code class="language-plaintext highlighter-rouge">sundial run</code> is simply a script installed as part of the Linking Client.</p>
-          
-            <video autoplay loop muted playsinline class="resizable x-s" aria-label="crond launching sundial run script as child process">
-              <source src="assets/videos/case-study/2.13.mp4" type="video/mp4" />
-              Your browser does not support the HTML5 Video element.
-            </video>
 
             <p>When launched, the <code class="language-plaintext highlighter-rouge">run</code> process sends a start ping to the Monitoring Service to notify the Service that the job has begun.</p>
 
-            <video autoplay loop muted playsinline class="resizable x-large" aria-label="sundial run script sending start ping to monitoring service">
+            <video autoplay loop muted playsinline class="resizable xx-large" aria-label="sundial run script sending start ping to monitoring service">
               <source src="assets/videos/case-study/2.14.mp4" type="video/mp4" />
               Your browser does not support the HTML5 Video element.
             </video>
 
             <p>Next, the <code class="language-plaintext highlighter-rouge">run</code> process spawns a child process that executes the actual job script.</p>
-
-            <video autoplay loop muted playsinline class="resizable xxx-large" aria-label="sundial run script launching rotate-log script">
-              <source src="assets/videos/case-study/2.15.mp4" type="video/mp4" />
-              Your browser does not support the HTML5 Video element.
-            </video>
 
             <p>Since child processes inherit the environmental variables of their parent processes, the <code>run</code> process inherits the user context set up by <em>crond</em> and passes that on to the job process. This means the job is executed in the same environment as if it were run directly by <em>crond</em>.</p>
 
@@ -441,14 +431,14 @@
 
             <p>Once the job finishes executing, the job process returns with an exit code. The <code class="language-plaintext highlighter-rouge">run</code> process has access to this exit code because the job process is run as a child of the <code class="language-plaintext highlighter-rouge">run</code> process. The <code class="language-plaintext highlighter-rouge">run</code> process sends an end ping to the Monitoring Service.</p>
 
-            <video autoplay loop muted playsinline class="resizable xxx-large" aria-label="sundial run script sending end ping to monitoring service">
+            <video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="sundial run script sending end ping to monitoring service">
               <source src="assets/videos/case-study/2.16.mp4" type="video/mp4" />
               Your browser does not support the HTML5 Video element.
             </video>
 
             <p>Additionally, if the exit code provided by the job process signifies an error occurred, the <code class="language-plaintext highlighter-rouge">run</code> process sends the Monitoring Service an error ping. This ping is different from an end ping in that it contains the error log, if one is available, returned by the job process.</p>
           
-            <video autoplay loop muted playsinline class="resizable xxx-large" aria-label="sundial run script sending error ping to monitoring service">
+            <video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="sundial run script sending error ping to monitoring service">
               <source src="assets/videos/case-study/2.17.mp4" type="video/mp4" />
               Your browser does not support the HTML5 Video element.
             </video>
@@ -475,13 +465,13 @@
             <br>
             <p>The Monitoring Service uses <strong>Task Queues</strong> to deal with missed pings.</p>
             
-            <img src="assets/images/case-study/2.19.svg" alt="monitoring services components" class="case-study-image resizable small centered"/>
+            <img src="assets/images/case-study/2.19.svg" alt="monitoring services components" class="case-study-image resizable large centered"/>
             
             <p>Task Queues are implemented with <strong>pg-boss</strong> <a href="#toc-8-references">[3]</a>, an npm package built on PostgreSQL. Specifically, we leverage the <strong>deferred tasks</strong> feature, where tasks are added with a specified delay and are processed by a worker only after that delay has passed.</p>
             <br>
             <p>A <strong>worker</strong> is a function assigned to a queue. The Monitoring Service executes this function when 'processing' a task, passing in any additional data included in the task.</p>
             
-            <video autoplay loop muted playsinline class="resizable large" aria-label="sundial run script sending end ping to monitoring service">
+            <video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="worker pulling task off queue when time reaches 0">
               <source src="assets/videos/case-study/2.18.mp4" type="video/mp4" />
               Your browser does not support the HTML5 Video element.
             </video>
@@ -716,7 +706,7 @@
             <br>
             <p>We considered two options to send these pings: insert cURL GET requests to all jobs in the crontab or write a ‘wrapping’ script that included the ping logic and the user’s command and have cron run it. We initially chose to use cURL requests for simplicity.</p>
             
-            <img src="assets/images/case-study/4.1.svg" alt="curl wrapped cron job" class="case-study-image resizable xx-large centered"/>
+            <img src="assets/images/case-study/4.1.svg" alt="curl wrapped cron job" class="case-study-image resizable xxxx-large centered"/>
             
             <p>The first cURL executes before the start of a job. The second cURL only executes if the script test-job.sh completes successfully.</p>
             <br>
