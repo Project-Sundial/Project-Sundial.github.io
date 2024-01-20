@@ -351,7 +351,7 @@
           <h3>4.2 Job Monitoring</h3>
             <br>
             <p>Monitoring aims to detect issues promptly, such as errors during job execution or jobs failing to run. Sundial conveys this information through its UI, using color to highlight potential faults during job execution.</p>
-            <img src="assets/images/case-study/2.6.svg" alt="all monitored jobs listed page in UI" class="case-study-image resizable large centered screenshot"/>
+            <img src="assets/images/case-study/2.6.svg" alt="all monitored jobs listed page in UI" class="case-study-image resizable xxxx-large centered screenshot"/>
             <br>
             <p>The Monitoring Service creates a <strong>monitor</strong> entity for every monitored cron job.</p>
             <br>
@@ -366,7 +366,7 @@
       
             <p>The Linking Client provides both requirements to the Monitoring Service. Next, we explain the two scripts that enable the Linking Client to do so.</p>
             
-            <img src="assets/images/case-study/2.7.svg" alt="linking clients run and discover scripts" class="case-study-image resizable large centered"/>
+            <img src="assets/images/case-study/2.7.svg" alt="linking clients run and discover scripts" class="case-study-image resizable medium centered"/>
           <h5>Prior Knowledge - <code>discover</code></h5>
             <br>
             <p>The Linking Client uses its <code>discover</code> script to provide the Monitoring Service with knowledge of jobs in a user’s crontab. The user executes the command <code>sundial discover</code> from the CLI to run the <code>discover</code> script.</p>
@@ -518,9 +518,10 @@
             <p>Through the methods discussed above, the Monitoring Service can record data about the execution of each job.</p>
             <br>
             <p>Execution data is organized as database entities called <strong>runs</strong>. For each expected execution of a cron job, Sundial creates a new run. Runs contain information regarding the existence or absence of start and end pings captured in the run’s <strong>state</strong>. The UI displays this data to the user.</p>
-            
-            <img src="assets/images/case-study/2.20.svg" alt="runs log" class="case-study-image large-image"/>
-            
+            <br>
+            <img src="assets/images/case-study/2.20.svg" alt="runs log" class="xxx-large screenshot"/>
+            <br>
+            <br>
             <p>The system accounts for seven various <strong>run states</strong>. Each state provides insight into the execution status, occurrences of errors and irregularities, and, taken together with other listed runs, the overall health of the cron job.</p>
             <br>
           <h4>Examples</h4>
@@ -549,14 +550,14 @@
                 <li>The Linking Client sends a start ping before the job starts.</li>
                 <li>The Monitoring Service creates and stores a run. The run contains the supplied run token and is given a state: <code>started</code>.</li>
                 <li>The Monitoring Service displays information derived from the run state to any user viewing the UI using Server-Sent Events (SSE).</li>
-                <img src="assets/images/case-study/2.21.svg" alt="started run displayed in UI" class="case-study-image resizable xx-large centered screenshot" />
+                <img src="assets/images/case-study/2.21.svg" alt="started run displayed in UI" class="case-study-image resizable xxxx-large centered screenshot" />
                 <li>To ensure that the Task Queues are constantly keeping track of when a job’s start or end pings are expected to arrive <em>next</em>, the Monitoring Service makes changes in <strong>both</strong> the Start and End Queues:</li>
                 <ul>
                     <li><em>Update</em> task in Start Queue:
                         <ol>
                             <li>The Services uses the ID (in this case, 7) to find the task in the start queue that is associated with the correct monitor</li>
                             <li>The Service updates the delay to reflect the next expected arrival of a start ping (12 hours)</li>
-                            <video autoplay loop muted playsinline class="resizable large" aria-label="update start queue task when start ping comes in">
+                            <video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="update start queue task when start ping comes in">
                                 <source src="assets/videos/case-study/2.22.mp4" type="video/mp4" />
                                 Your browser does not support the HTML5 Video element.
                             </video>
@@ -566,7 +567,7 @@
                         <ol>
                             <li>The Service adds a task with the <strong>run token</strong> provided by the ping. The worker that processes this task uses the run token to ensure it alters the correct run entity in the database.</li>
                             <li>The Service sets the delay using the <strong>tolerable runtime</strong> (1 minute)</li>
-                            <img src="assets/images/case-study/2.23.5.svg" alt="started run displayed in UI" class="case-study-image resizable medium centered screenshot"/>
+                            <img src="assets/images/case-study/2.23.5.svg" alt="task added to end queue after start ping comes in" class="case-study-image resizable xx-large centered"/>
                         </ol>
                     </li>
                 </ul>
@@ -577,11 +578,11 @@
             <ol>
                 <li>The Linking Client sends an end ping once the job ends.</li>
                 <li>The Monitoring Service retrieves the run created by the start ping and updates its state to <code>completed</code>.</li>
-                <img src="assets/images/case-study/2.24.svg" alt="run complete displayed in UI" class="case-study-image resizable xx-large centered screenshot"/>
+                <img src="assets/images/case-study/2.24.svg" alt="run completed displayed in UI" class="case-study-image resizable xxxx-large centered screenshot"/>
                 <li>The Service removes the associated End Queue task because the end ping came within the tolerable runtime.</li>
                 <ul>
                     <li><em>Remove</em> task from End Queue:
-                        <video autoplay loop muted playsinline class="resizable large" aria-label="end queue task removed when ping arrives">
+                        <video autoplay loop muted playsinline class="resizable xxx-large" aria-label="end queue task removed when ping arrives">
                             <source src="assets/videos/case-study/2.25.mp4" type="video/mp4" />
                             Your browser does not support the HTML5 Video element.
                         </video>
@@ -602,7 +603,7 @@
                     </video>
                 </li>
                 <li>The worker creates a new run with the state <code>missed</code>.
-                    <img src="assets/images/case-study/2.27.svg" alt="start ping missed displayed in UI" class="case-study-image resizable xx-large centered screenshot"/>
+                    <img src="assets/images/case-study/2.27.svg" alt="start ping missed displayed in UI" class="case-study-image resizable xxxx-large centered screenshot"/>
                 </li>
                 <li>The worker creates a new task in the Start Queue to recognize the next expected start ping.</li>
             </ol>
@@ -612,13 +613,9 @@
             <ol>
                 <li>The Linking Client does not send an end ping when the Monitoring Service expects one.</li>
                 <li>The delay on the task in the End Queue elapses, and a worker processes the task.
-                    <video autoplay loop muted playsinline class="resizable medium" aria-label="end queue task removed by worker">
-                        <source src="assets/videos/case-study/2.28.mp4" type="video/mp4" />
-                        Your browser does not support the HTML5 Video element.
-                    </video>
                 </li>
                 <li>The worker retrieves the run created by the start ping and updates the state to <code>unresolved</code>.
-                    <img src="assets/images/case-study/2.29.svg" alt="missed end ping displayed in UI" class="case-study-image resizable xx-large centered screenshot"/>
+                    <img src="assets/images/case-study/2.29.svg" alt="missed end ping displayed in UI" class="case-study-image resizable xxxx-large centered screenshot"/>
                 </li>
             </ol>
             <br>
@@ -630,11 +627,11 @@
             <br>
             <p>Each cron job is added or edited from its form, like the one shown here.</p>
             
-            <img src="assets/images/case-study/3.1.svg" alt="new job form" class="case-study-image resizable xx-large centered screenshot"/>
+            <img src="assets/images/case-study/3.1.svg" alt="new job form" class="case-study-image resizable xxx-large centered screenshot"/>
             
             <p>The form allows the user to see the schedule and command of a job clearly at a glance and makes it harder to modify the wrong cron job. Additionally, the schedule field includes an automatic Schedule Translator. It translates the schedule string to text in real time as a user enters data into the form. The Translator confirms the accuracy of the schedule, clarifying the cryptic cron schedule syntax.</p>
             
-            <img src="assets/images/case-study/3.2.svg" alt="syntax helper in UI" class="case-study-image resizable medium centered screenshot"/>
+            <img src="assets/images/case-study/3.2.svg" alt="syntax helper in UI" class="case-study-image resizable x-large centered screenshot"/>
             
             <p>The Monitoring Service automatically synchronizes changes made to jobs from the UI with the crontab. In a multi-node setup, the user must specify the node when adding new jobs.</p>
             <br>
@@ -642,17 +639,17 @@
             <br>
             <p>New jobs or job updates written to the UI are referred to as <strong>management data</strong>. This section explains how management data travels to its intended crontab. The components involved in management are:</p>
             
-            <img src="assets/images/case-study/3.3.svg" alt="components involved in management" class="case-study-image resizable x-large centered screenshot"/>
+            <img src="assets/images/case-study/3.3.svg" alt="components involved in management" class="case-study-image resizable xxx-large centered"/>
             
             <ol>
-                <li>UI</li>
+                <li>Dashboard</li>
                 <li>Database</li>
                 <li>Listening Service</li>
                 <li>Linking Client <code>update</code> script</li>
                 <li>crontab</li>
             </ol>
             <br>
-            <p>In this section, we refer to interactions between the UI and the Monitoring Service's database and the Linking Client and the Monitoring Service's database. The UI and the Linking Client perform these interactions using HTTP requests to the API exposed by the Monitoring Service's application server. However, for the sake of simplicity, we do not make further reference to this and treat the discussion as if the UI and Linking Client can interact with the database directly.</p>
+            <p>In this section, we refer to communications between the Dashboard and the Monitoring Service's database, as well as the the Linking Client and the Monitoring Service's database. The Dashboard and the Linking Client perform these interactions using HTTP requests to the API exposed by the Monitoring Service's application server. However, for the sake of simplicity, we do not make further reference to this and treat the discussion as if the Dashboard and Linking Client can interact with the database directly.</p>
             <br>
             <p><strong>Recall:</strong></p>
             <ul>
@@ -660,9 +657,9 @@
                 <li>The user installs the Linking Client on each node with a crontab they want to integrate with Sundial.</li>
             </ul>
             <br>
-            <p>As shown, the UI and database are part of the Monitoring Service. When the user inputs new management data to the UI, the data is saved to the first persistent data store it encounters: the database.</p>
+            <p>When the user inputs new management data to the Dashboard, the data is saved to the first persistent data store it encounters: the database.</p>
             
-            <video autoplay loop muted playsinline class="resizable small" aria-label="in monitoring service, data travels from UI through app servers API to database">
+            <video autoplay loop muted playsinline class="resizable large" aria-label="in monitoring service, data travels from UI through app servers API to database">
                 <source src="assets/videos/case-study/3.4.mp4" type="video/mp4" />
                 Your browser does not support the HTML5 Video element.
             </video>
@@ -671,7 +668,7 @@
             <br>
             <p>To address this issue, the Linking Client includes an <code>update</code> script that fetches management data from the Monitoring Service’s database and writes it to the crontab. In the below diagram, arrows represent HTTP requests and responses.</p>
             
-            <video autoplay loop muted playsinline class="resizable medium-large" aria-label="update script sending request to moniotring service for data writes that to crontab">
+            <video autoplay loop muted playsinline class="resizable xxx-large" aria-label="update script sending request to moniotring service for data writes that to crontab">
                 <source src="assets/videos/case-study/3.5.mp4" type="video/mp4" />
                 Your browser does not support the HTML5 Video element.
             </video>
@@ -681,14 +678,10 @@
             <p>
               The Listening Service has one role: to await requests from the Monitoring Service. A request signals new management data is available in the Monitoring Service's database. When the Listening Service receives this request, it initiates the execution of the <code class="language-plaintext highlighter-rouge">update</code> script. Note that the <code class="language-plaintext highlighter-rouge">update</code> script is idempotent, guaranteeing consistent and predictable outcomes with each execution.
             </p>
-            <video autoplay loop muted playsinline class="resizable small" aria-label="monitroing service send a ping to listening services API, which launches the update script">
-              <source src="assets/videos/case-study/3.6.mp4" type="video/mp4" />
-              Your browser does not support the HTML5 Video element.
-            </video>
             
             <p>Below is a diagram of the complete management data flow.</p>
             
-            <video autoplay loop muted playsinline class="resizable medium-large" aria-label="monitoring service sends request to listening service, twhich launches the update script, which requests new data from monitroring service and writes that to crontab.">
+            <video autoplay loop muted playsinline class="resizable xxxx-large" aria-label="monitoring service sends request to listening service, twhich launches the update script, which requests new data from monitroring service and writes that to crontab.">
                 <source src="assets/videos/case-study/3.7.mp4" type="video/mp4" />
                 Your browser does not support the HTML5 Video element.
             </video>
