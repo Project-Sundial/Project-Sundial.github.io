@@ -495,17 +495,17 @@
             <p>The most critical component of the Queues is the <strong>delay</strong> for each task. If the Monitoring Service doesn’t receive a ping within the specified delay, the associated task is processed, and the Service documents the ping as missed.</p>
             <br>
             <p>Calculating the delay for a Start Queue task:</p>
-            <pre>
-              time until next scheduled execution of job + grace period
-            </pre>
+            <blockquote>
+              <p>time until next scheduled execution of job + grace period</p>
+            </blockquote>
             <br>
   
             <p>The grace period is set to 5s to account for expected delays such as network latency or high load on the Monitoring Service.</p>
             <br>
             <p>Calculating the delay for an End Queue task :</p>
-            <pre>
-              tolerable runtime + grace period
-            </pre>
+            <blockquote>
+              <p>tolerable runtime + grace period</p>
+            </blockquote>
             <br>
             <p>Tolerable runtime signifies the maximum acceptable duration of the job. The default is set to 15s, but users can configure this in the UI to suit their preferences.</p>
             <br>
@@ -845,7 +845,9 @@
             <br>
             <p>This section examines our options for managing data flow to the crontab.</p>
             <br>
-            <p>The simplest option was to have the Monitoring Service directly transmit updated cron job information to the Listening Service. As shown below, the Monitoring Service makes an HTTP request to the Listening Service containing the data, triggering the Listening Service to invoke a Linking Client script that writes the data from the request body to the crontab.</p>
+            <!-- <p>The simplest option was to have the Monitoring Service directly transmit updated cron job information to the Listening Service. As shown below, the Monitoring Service makes an HTTP request to the Listening Service containing the data, triggering the Listening Service to invoke a Linking Client script that writes the data from the request body to the crontab.</p>
+            <br> -->
+            <p>The simplest option was to have the Monitoring Service directly transmit updated cron job information to the Listening Service. The Monitoring Service makes an HTTP request to the Listening Service containing the data, triggering the Listening Service to invoke a Linking Client script that writes the data from the request body to the crontab.</p>
             <br>
             <p>This approach worked fine in the locally hosted version of our application. Still, it introduced a notable vulnerability over multiple nodes: if not appropriately secured, each Listening Service would become a potential entry point for malicious actors to inject unauthorized cron jobs.</p>
             <br>
@@ -967,7 +969,7 @@
             <p>For jobs set to run every minute, we determine this restriction using the formula:</p>
             
             <blockquote>
-              <p>$$ d + r < 60 $$</p>
+              <p>d + r < 60</p>
             </blockquote>
             
             <p>Where \(d\) is the duration of the job, modeled by the waiting period, and \(r\) is the response time of the end ping. For example, if a job lasts 55 seconds, rearranging this equation yields a maximum acceptable response time of 5 seconds.</p>
