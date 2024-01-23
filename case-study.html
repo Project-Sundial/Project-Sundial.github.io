@@ -378,9 +378,9 @@
                 Your browser does not support the HTML5 Video element.
             </video>
             
-            <p>Additionally, the <code>discover</code> script sets up the real-time notifications of job execution that the Monitoring Service requires through a process called “<strong>wrapping</strong>”<a href="#toc-8-references">[7]</a>.</p>
+            <p>Additionally, the <code>discover</code> script sets up the real-time notifications of job execution that the Monitoring Service requires through a process called <strong>wrapping</strong><a href="#toc-8-references">[7]</a>.</p>
             <img src="assets/images/case-study/2.9.5.svg" alt="pre-wrapped crontab" class="case-study-image resizable large centered"/>
-            <p>As shown above, cron jobs are considered “<strong>wrapped</strong>” when the text <code>sundial run</code>, followed by a string of letters and numbers, has been inserted in between the schedule and the command.</p>
+            <p>As shown above, cron jobs are considered <strong>wrapped</strong> when the text <code>sundial run</code>, followed by a string of letters and numbers, has been inserted in between the schedule and the command.</p>
             <br>
             <p>The string of alphanumeric characters, known as the <strong>endpoint key</strong>, is used by the Monitoring Service to link execution notifications from a job with the job’s corresponding database entity.</p>
             <br>
@@ -410,7 +410,7 @@
             
             <img src="assets/images/case-study/1.2.svg" alt="pre-wrapped cron job: 0 02 * * * /path/to/rotate-log" class="case-study-image resizable large centered"/>
             
-            <p>When a job is “wrapped”, the schedule string is followed by <code>sundial run</code>, an endpoint key, and the original job script.</p>
+            <p>When a job is wrapped, the schedule string is followed by <code>sundial run</code>, an endpoint key, and the original job script.</p>
             
             <img src="assets/images/case-study/2.12.svg" alt="wrapped cron job: 0 02 * * * sundial run /path/to/rotate-log" class="case-study-image resizable xxx-large centered"/>
 
@@ -697,7 +697,7 @@
             <br>
             <p>To get information about the execution of the job, we used the same pattern we saw from other task monitoring services: sending requests (pings) before and after job execution. Receiving a ping would indicate that a job successfully completed an action (it started or ended), while not receiving one would indicate a failure (failure to start or end).</p>
             <br>
-            <p>We considered two options to send these pings: insert cURL GET requests to all jobs in the crontab or write a ‘wrapping’ script that included the ping logic and the user’s command and have cron run it. We initially chose to use cURL requests for simplicity.</p>
+            <p>We considered two options to send these pings: insert cURL GET requests to all jobs in the crontab or write a wrapping script that included the ping logic and the user’s command and have cron run it. We initially chose to use cURL requests for simplicity.</p>
             
             <img src="assets/images/case-study/4.1.svg" alt="curl wrapped cron job" class="case-study-image resizable xxxx-large centered"/>
             
@@ -707,7 +707,7 @@
             <br>
             <p>We realized that writing a ‘wrapping’ script instead gave us more control because we could add logic around a job’s execution: we could gather error logs, send more specific information like a ping to indicate failure, and execute any additional actions (e.g. re-running a job, although we did not implement this).</p>
             <br>
-            <p>The final implementation of our Monitoring Service uses this ‘wrapping’ option.</p>
+            <p>The final implementation of our Monitoring Service uses this wrapping option.</p>
             <br>
             <p>Recall the <code>discover</code> and <code>run</code> scripts from the Linking Client: the user runs <code>sundial discover</code> to wrap their cron jobs, which involves adding <code>sundial run</code>. The <code>run</code> script invokes a child process to run the user’s specified script, which makes it possible for the script to send a ping when a job errors out and send error logs from that aborted process.</p>
             
